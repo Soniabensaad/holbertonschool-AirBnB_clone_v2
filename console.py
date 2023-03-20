@@ -113,15 +113,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def  create_inst(self, line):
+        """Parse a key, value pair, separated by '='"""
+        new = {}
+        for i in line:
+            if "=" in i:
+                #create list from key and value
+                # split if "=" is found
+                arg_new = i.split("=")
+                key = arg_new[0]
+                value = arg_new[1]
+                if value[0] == '""'== value[-1]:
+                    value.replace('"', '').replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except Exception:
+                        try:
+                            value = float(value)
+                        except Exception:
+                            continue
+                new[key] = value
+        return new
+
+
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.split()
+        if not args[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        #create dictionnary using args , args[0] is the name of db
+        new = self.create_inst(args[1:])
+        new_instance = HBNBCommand.classes[args[0]](**new)
         storage.save()
         print(new_instance.id)
         storage.save()
