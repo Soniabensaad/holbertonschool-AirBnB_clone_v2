@@ -9,11 +9,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
     __file_path = 'file.json'
@@ -21,19 +17,13 @@ class FileStorage:
 
     def all(self, cls= None):
         """Returns a dictionary of models currently in storage"""
-        fs_objects = {}
-        if cls:
-            if type(cls) is str and cls in classes:
-                for key, val in self.__objects.items():
-                    if cls == key.split('.')[0]:
-                        fs_objects[key] = val
-            elif cls.__name__ in classes:
-                for key, val in self.__objects.items():
-                    if cls.__name__ == key.split('.')[0]:
-                        fs_objects[key] = val
-        else:
-            return self.__objects
-        return fs_objects
+        if cls is not None:
+            new = {}
+            for key, value in self.__objects.items():
+                if cls == value.__class__ or cls == value.__class__.__name__:
+                    new[key] = value
+            return new
+        return self.__objects
 
 
     def new(self, obj):
@@ -52,6 +42,11 @@ class FileStorage:
     def reload(self):
         """Loads storage dictionary from file"""
 
+        classes = {
+                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                    'State': State, 'City': City, 'Amenity': Amenity,
+                    'Review': Review
+                  }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
