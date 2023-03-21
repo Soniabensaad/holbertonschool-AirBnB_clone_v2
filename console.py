@@ -114,48 +114,40 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     
-    def _create_dict_instance(self, line):
-        """
-            Parse input and convert it to
-            Dict for do_create
-        """
-        new_dict = {}
-        for item in line:
-            if "=" in item:
-                # creating list from value and key
-                # if "=" found
-                new_arg = item.split("=", 1)
-                key = new_arg[0]
-                value = new_arg[1]
-                if value[0] == '"' == value[-1]:
-                    value = value.replace('"', "").replace("_", " ")
-                else:
-                    try:
-                        value = int(value)
-                    except Exception:
-                        try:
-                            value = float(value)
-                        except Exception:
-                            continue
-                new_dict[key] = value
-        return new_dict
-
     def do_create(self, args):
         """ Create an object of any class"""
-        args = args.split()
-        if not args[0]:
+        arg = args.split()
+        if not args:
             print("** class name missing **")
             return
-        elif args[0] not in HBNBCommand.classes:
+        elif arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        # creating a dict from args
-        new_dict = self._create_dict_instance(args[1:])
-        # sending args on form of kwargs
-        new_instance = HBNBCommand.classes[args[0]](**new_dict)
-        print(new_instance.id)
-        new_instance.save()
+        new_instance = HBNBCommand.classes[arg[0]]()
+        storage.save()
+        y = storage.all()
+        lis = arg[1:]
+        key = arg[0]+"."+new_instance.id
+        value = y[key].__dict__
+        for i in lis:
+            args_name = i.split("=")
+            if (args_name[1][0] == "\""):
+                step = args_name[1].split("\"")
+                name = step[1].split("_")
+                name_2 = ""
+                for a in name:
+                    if (a != name[-1]):
+                        name_2 += a
+                        name_2 = name_2+" "
+                    else:
+                        name_2 += a
+                value[args_name[0]] = name_2
+            else:
+                value[args_name[0]] = HBNBCommand.types[args_name[0]](
+                    args_name[1])
 
+        print(new_instance.id)
+        storage.save()
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
