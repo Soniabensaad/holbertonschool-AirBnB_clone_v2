@@ -112,49 +112,40 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
-
     
-    def dict_instance(self, line):
-        """
-            Parse input and convert it to
-            Dict for do_create
-        """
-        dict = {}
-        for item in line:
-            if "=" in item:
-                # creating list from value and key
-                # if "=" found
-                arg = item.split("=")
-                key = arg[0]
-                value = arg[1]
-                if value[0] == '"' == value[-1]:
-                    value = value.replace('"', "").replace("_", " ")
-                else:
-                    try:
-                        value = int(value)
-                    except Exception:
-                        try:
-                            value = float(value)
-                        except Exception:
-                            continue
-                dict[key] = value
-        return dict
-
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
-        args = args.split()
-        if not args[0]:
+        args = arg.split()
+        if not args:
             print("** class name missing **")
             return
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        # creating a dict from args
-        new_dict = self.dict_instance(args[1:])
-        # sending args on form of kwargs
-        new_instance = HBNBCommand.classes[args[0]](**new_dict)
+        new_instance = HBNBCommand.classes[args[0]]()
+        storage.save()
+        dict = storage.all()
+        list_di = args[1:]
+        key = args[0] + "." + new_instance.id
+        value = dict[key].__dict__
+        for item in list_di:
+            arg_n = item.split("=")#split = in key, value
+            if (arg_n[1][0] == "\""):#avoid "" in string
+                arg_c = arg_n[1].split("\"")#split("") in string value
+                arg_h = arg_c[1].split("_")#split(_) in string value
+                esc = ""#add space
+                for escape in arg_h:
+                    if (escape != arg_h[-1]):
+                        esc += escape
+                        esc = esc + ""
+                    else:
+                        esc += escape
+                value[arg_n[0]] = esc
+            else:
+                value[arg_n[0]] = HBNBCommand.types[arg_n[0]](
+                    arg_n[1])
         print(new_instance.id)
-        new_instance.save()
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
