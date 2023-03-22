@@ -16,42 +16,45 @@ classes = {"Amenity": Amenity, "City": City,
 
 
 class DBStorage():
-    """new storge"""
+    """storage for datas"""
     __engine = None
     __session = None
 
     def __init__(self):
-        """initialization"""
+        """environment"""
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
         HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
         HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-            HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB),
+            HBNB_MYSQL_USER,
+              HBNB_MYSQL_PWD,
+                HBNB_MYSQL_HOST,
+                  HBNB_MYSQL_DB),
             pool_pre_ping=True)
         if HBNB_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """squery database session"""
-        all_dict = {}
-        for itr in classes:
+        """query database session"""
+        dict = {}
+        for q in classes:
             if cls is None :
-                objs = self.__session.query(classes[itr]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    all_dict[key] = obj
-        return (all_dict)
+                objs = self.__session.query(classes[q]).all()
+                for value in objs:
+                    key = value.__class__.__name__ + '.' + value.id
+                    dict[key] = value
+        return (dict)
 
     def new(self, obj):
-        """add new obj"""
+        """add new object"""
         if obj is not None:
             self.__session.add(obj)
             self.save()
 
     def save(self):
-        """commit changes"""
+        """save datas"""
         self.__session.commit()
 
     def delete(self, obj=None):
@@ -61,7 +64,7 @@ class DBStorage():
             self.save()
 
     def reload(self):
-        """reload"""
+        """reload object"""
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
