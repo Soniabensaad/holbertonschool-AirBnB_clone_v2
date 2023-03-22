@@ -16,7 +16,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 
 class DBStorage:
-    """using sqlAlchemy store datas"""
+    """using sqlAlchemy store data"""
     __engine = None
     __session = None
     classes = ["State", "City", "User", "Place", "Review"]
