@@ -175,6 +175,9 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
+    def help_count(self):
+        """ """
+        print("Usage: count <class_name>")
 
     def do_update(self, args):
         """ Updates a certain object with new info """
@@ -259,6 +262,10 @@ class HBNBCommand(cmd.Cmd):
 
         new_dict.save()  # save updates to file
 
+    def help_update(self):
+        """ Help information for the update class """
+        print("Updates an object with new information")
+        print("Usage: update <className> <id> <attName> <attVal>\n")
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
