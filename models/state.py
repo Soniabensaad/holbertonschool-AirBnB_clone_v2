@@ -8,7 +8,6 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-
 class State(BaseModel, Base):
     """ State class """
     

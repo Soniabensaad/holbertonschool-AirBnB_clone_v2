@@ -11,4 +11,3 @@ else:
     from models.engine.file_storage import FileStorage
     instance = FileStorage()
     instance.reload()
-
