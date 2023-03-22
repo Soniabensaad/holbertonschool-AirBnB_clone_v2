@@ -11,9 +11,21 @@ from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
     """ State class """
+    
+class State(BaseModel, Base):
+    """ State class """
     __tablename__ = "States"
     name = Column(String(128), nullable=False)
     cities = relationship('City', backref='state')
+
+@property
+def cities(self):
+    """FileStorage relationship between State and City"""
+    list = []
+    for city in storage.all(City):
+        if (city.state_id == self.id):
+            list.append(city)
+    return list
 
 @property
 def cities(self):
