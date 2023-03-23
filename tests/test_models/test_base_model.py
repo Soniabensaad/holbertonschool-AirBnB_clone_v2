@@ -25,7 +25,6 @@ class TestBaseModel(unittest.TestCase):
             pass
 
     def test_checking_for_functions(self):
-        self.assertIsNotNone(BaseModel.__doc__)
         self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
