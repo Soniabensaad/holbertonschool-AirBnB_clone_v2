@@ -40,16 +40,16 @@ class Place(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def reviews(self):
-            lis = []
+            list = []
             for i in self.__session.query(Review).all():
                 if (i.Place_id == self.id):
-                    lis.append(i)
-            return (lis)
+                    list.append(i)
+            return (list)
 
         @property
         def amenities(self):
-            lis = []
+            list = []
             for i in self.__session.query(Amenity).all():
                 if (i.amenity_ids == self.id):
-                    lis.append(i)
-            return (lis)
+                    list.append(i)
+            return (list)
