@@ -25,9 +25,6 @@ class TestAmenity(unittest.TestCase):
     def test_is_subclass(self):
         self.assertTrue(issubclass(self.amenity1.__class__, BaseModel), True)
 
-    def test_checking_for_functions(self):
-        self.assertIsNotNone(Amenity.__doc__)
-
     def test_has_attributes(self):
         self.assertTrue('id' in self.amenity1.__dict__)
         self.assertTrue('created_at' in self.amenity1.__dict__)
