@@ -9,23 +9,27 @@ class FileStorage:
     __objects = {}
 
     def delete(self, obj=None):
-        """ delete obj from __objects if it’s inside - if obj is equal to None
-        the method should not do anything"""
-        if obj is not None:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
+        """Returns a dictionary of models currently in storage"""
+        if (obj is None):
+            print
+        else:
+            for i in self.__objects:
+                if self.__objects[i] == obj:
+                    del self.__objects[i]
+                    self.save()
+                    break
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is not None:
-            new_dict = {}
-            for key, value in self.__objects.items():
-                if cls == value.__class__ or cls == value.__class__.__name__:
-                    new_dict[key] = value
-            return new_dict
-        return self.__objects
-        
+        if (cls is not None):
+            lis = {}
+            for i in self.__objects:
+                m = type(self.__objects[i])
+                if (cls == m):
+                    lis[i] = self.__objects[i]
+            return (lis)
+        else:
+            return (self.__objects)
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
