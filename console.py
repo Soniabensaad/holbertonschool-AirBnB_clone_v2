@@ -113,26 +113,26 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = HBNBCommand.classes[arg[0]]()
         storage.save()
-        y = storage.all()
-        lis = arg[1:]
+        store = storage.all()
+        list = arg[1:]
         key = arg[0]+"."+new_instance.id
-        value = y[key].__dict__
-        for i in lis:
-            args_name = i.split("=")
-            if (args_name[1][0] == "\""):
-                step = args_name[1].split("\"")
-                name = step[1].split("_")
-                name_2 = ""
-                for a in name:
-                    if (a != name[-1]):
-                        name_2 += a
-                        name_2 = name_2+" "
+        value = store[key].__dict__
+        for i in list:
+            egal = i.split("=")
+            if (egal[1][0] == "\""):
+                cote = egal[1].split("\"")
+                tiret = cote[1].split("_")
+                espace = ""
+                for i in tiret:
+                    if (i != tiret[-1]):
+                        espace += i
+                        espace = espace+" "
                     else:
-                        name_2 += a
-                value[args_name[0]] = name_2
+                        espace += i
+                value[egal[0]] = espace
             else:
-                value[args_name[0]] = HBNBCommand.types[args_name[0]](
-                    args_name[1])
+                value[egal[0]] = HBNBCommand.types[egal[0]](
+                    egal[1])
         print(new_instance.id)
         storage.save()
 
