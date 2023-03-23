@@ -1,17 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-import models
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -23,26 +13,24 @@ class FileStorage:
         if (obj is None):
             print
         else:
-            key = obj.__class__.__name__ + "." + str(obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
-            self.save()
+            for i in self.__objects:
+                if self.__objects[i] == obj:
+                    del self.__objects[i]
+                    self.save()
+                    break
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        fs_objects = {}
-        if cls:
-            if type(cls) is str and cls in classes:
-                for key, val in self.__objects.items():
-                    if cls == key.split('.')[0]:
-                        fs_objects[key] = val
-            elif cls.__name__ in classes:
-                for key, val in self.__objects.items():
-                    if cls.__name__ == key.split('.')[0]:
-                        fs_objects[key] = val
+        if (cls is not None):
+            list = {}
+            for i in self.__objects:
+                classy = type(self.__objects[i])
+                if (cls == classy):
+                    list[i] = self.__objects[i]
+            return (list)
         else:
-            return self.__objects
-        return fs_objects
+            return (self.__objects)
+
     def new(self, obj):
         """Adds new object to storage dictionary"""
         self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
