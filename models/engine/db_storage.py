@@ -32,14 +32,14 @@ class DBStorage():
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        all_dict = {}
-        for itr in classes:
+        dict = {}
+        for a in classes:
             if cls is None:
-                objs = self.__session.query(classes[itr]).all()
+                objs = self.__session.query(classes[a]).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
-                    all_dict[key] = obj
-        return (all_dict)
+                    dict[key] = obj
+        return (dict)
 
     def new(self, obj):
         if obj is not None:
