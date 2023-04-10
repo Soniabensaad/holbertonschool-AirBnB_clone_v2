@@ -11,8 +11,9 @@ app = Flask(__name__)
 def hello_hbnb():
     """script that starts a Flask web application"""
     return 'Hello HBNB!'
-@app.route('/hbnb')
 
+
+@app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """/hbnb: display “HBNB”"""
     return 'HBNB'
