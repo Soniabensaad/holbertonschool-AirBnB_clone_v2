@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 """Defines the DBStorage engine."""
 from os import getenv
