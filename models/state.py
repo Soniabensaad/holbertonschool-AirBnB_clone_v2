@@ -28,13 +28,9 @@ class State(BaseModel, Base):
     if storage_type != 'db':
         @property
         def cities(self):
-            """
-            get list of City instances with state_id
-            equals to the current State.id
-            """
-            list_cities = []
-            all_cities = models.storage.all(City)
-            for city_obj in all_cities.items():
-                if city_obj.state_id == self.id:
-                    list_cities.append(city_obj)
-            return list_cities
+            """Get a list of all related City objects."""
+            city_list = []
+            for city in list(models.storage.all(City).values()):
+                if city.state_id == self.id:
+                    city_list.append(city)
+            return city_list
